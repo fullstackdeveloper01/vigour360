@@ -6,7 +6,7 @@ import CreateForm from '@/components/CreateForm';
 import UpdateForm from '@/components/UpdateForm';
 import DeleteModal from '@/components/DeleteModal';
 import ReadItem from '@/components/ReadItem';
-import SearchItem from '@/components/SearchItem';
+// import SearchItem from '@/components/SearchItem';
 import DataTable from '@/components/DataTable/DataTable';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -94,16 +94,16 @@ function FixHeaderPanel({ config }) {
     collapsedBox.close();
   };
 
-  return (
-    <Row gutter={8}>
-      <Col className="gutter-row" span={21}>
-        <SearchItem config={config} />
-      </Col>
-      <Col className="gutter-row" span={3}>
-        <Button onClick={addNewItem} block={true} icon={<PlusOutlined />}></Button>
-      </Col>
-    </Row>
-  );
+  // return (
+  //   <Row gutter={8}>
+  //     <Col className="gutter-row" span={21}>
+  //       {/* <SearchItem config={config} /> */}
+  //     </Col>
+  //     <Col className="gutter-row" span={3}>
+  //       <Button onClick={addNewItem} block={true} icon={<PlusOutlined />}></Button>
+  //     </Col>
+  //   </Row>
+  // );
 }
 
 function CrudModule({ config, createForm, updateForm, withUpload = false }) {

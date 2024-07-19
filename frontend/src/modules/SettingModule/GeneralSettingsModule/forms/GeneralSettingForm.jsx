@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input, Form, Select, Switch } from 'antd';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
 
-import languages from '@/locale/languages';
+// import languages from '@/locale/languages';
 import useLanguage from '@/locale/useLanguage';
 import { translateAction } from '@/redux/translate/actions';
 import { countryList } from '@/utils/countryList';
@@ -14,7 +14,7 @@ export default function GeneralSettingForm() {
 const langDirection=useSelector(selectLangDirection)
   return (
     <div style={{direction:langDirection}}>
-      <Form.Item
+      {/* <Form.Item
         label={translate('language')}
         name="idurar_app_language"
         rules={[
@@ -48,7 +48,7 @@ const langDirection=useSelector(selectLangDirection)
             </Select.Option>
           ))}
         </Select>
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item
         label={translate('country')}
         name="idurar_app_country"

@@ -9,3 +9,7 @@
 @import './partials/sidePanel.css';
 @import './partials/collapseBox.css';
 @import './partials/erp.css';
+
+@import '/node_modules/bootstrap/dist/css/bootstrap-grid.css';
+@import './style.css';
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css');

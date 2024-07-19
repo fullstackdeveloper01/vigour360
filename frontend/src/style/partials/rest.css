@@ -10,7 +10,7 @@
   font-display: swap;
 }
 * {
-  font-family: 'Nunito', sans-serif !important;
+  font-family: 'Nunito', sans-serif ;
   -webkit-font-smoothing: antialiased;
   font-weight: 700;
 }

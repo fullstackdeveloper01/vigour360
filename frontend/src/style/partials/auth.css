@@ -39,3 +39,21 @@
 .sideContent * {
   color: #4f5d75 !important;
 }
+
+
+.table{
+  width: 100%;
+}
+
+
+
+.panel-heading h3 {
+  white-space: normal;
+  width: 100%;
+  margin-top: 5px;
+  display: flex;
+  color: #22075e !important;
+}
+
+
+

@@ -5,27 +5,19 @@ import { Button, Drawer, Layout, Menu } from 'antd';
 import { useAppContext } from '@/context/appContext';
 
 import useLanguage from '@/locale/useLanguage';
-import logoIcon from '@/style/images/vigour.png';
-// import logoText from '@/style/images/vigour.png';
+import logoIcon from '@/style/images/logo.jpg';
+// import logoText from '@/style/images/logo-text.svg';
 
 import useResponsive from '@/hooks/useResponsive';
 
 import {
-  SettingOutlined,
   CustomerServiceOutlined,
-  ContainerOutlined,
-  FileSyncOutlined,
   DashboardOutlined,
-  TagOutlined,
-  TagsOutlined,
   UserOutlined,
-  CreditCardOutlined,
   MenuOutlined,
   FileOutlined,
   ShopOutlined,
   FilterOutlined,
-  WalletOutlined,
-  ReconciliationOutlined,
 } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { selectLangDirection } from '@/redux/translate/selectors';
@@ -57,25 +49,30 @@ function Sidebar({ collapsible, isMobile = false }) {
       label: <Link to={'/'}>{translate('dashboard')}</Link>,
     },
     {
-      key: 'Doctors',
+      key: 'customer',
       icon: <CustomerServiceOutlined />,
-      label: <Link to={'/'}>{translate('Doctors')}</Link>,
+      label: <Link to={'/doctors'}>{translate('Doctors')}</Link>,
     },
     {
-      key: 'Schools',
-      icon: <ShopOutlined />,
-      label: <Link to={'/'}>{translate('Schools')}</Link>,
-    }, 
-    {
-      key: 'Corporates',
+      key: 'people',
       icon: <UserOutlined />,
-      label: <Link to={'/'}>{translate('Corporates')}</Link>,
-    },  
+      label: <Link to={'/people'}>{translate('Schools')}</Link>,
+    },
     {
-      key: 'Classes',
-      icon: <ContainerOutlined />,
-      label: <Link to={'/'}>{translate('Classes')}</Link>,
-    },  
+      key: 'company',
+      icon: <ShopOutlined />,
+      label: <Link to={'/company'}>{translate('Corporates')}</Link>,
+    },
+    {
+      key: 'lead',
+      icon: <FilterOutlined />,
+      label: <Link to={'/lead'}>{translate('Classes')}</Link>,
+    },
+    {
+      key: 'offer',
+      icon: <FileOutlined />,
+      label: <Link to={'/blog'}>{translate('Blog')}</Link>,
+    },
     
   ];
 
@@ -134,9 +131,19 @@ function Sidebar({ collapsible, isMobile = false }) {
           cursor: 'pointer',
         }}
       >
-        <img src={logoIcon} alt="Logo" style={{ marginLeft: '-5px', height: '70px' }} />
+        <img src={logoIcon} alt="Logo" style={{ marginLeft: '-5px', height: '80px' }} />
 
-        
+        {/* {!showLogoApp && (
+          <img
+            src={logoText}
+            alt="Logo"
+            style={{
+              marginTop: '3px',
+              marginLeft: '10px',
+              height: '38px',
+            }}
+          />
+        )} */}
       </div>
       <Menu
         items={items}
