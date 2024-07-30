@@ -22,7 +22,7 @@ app.use(
   );
 
 app.use('/api/', authRoute);
-//app.use('/api/admin/', adminRoute);
+app.use('/api/admin/', adminRoute);
 
 app.get('/', (req, res) => {
     res.status(200).send({

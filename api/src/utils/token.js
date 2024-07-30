@@ -8,7 +8,13 @@ const decode = (token) => {
     try {
         return jwt.verify(token, JWT_SECRET_KEY)
     } catch (error) {
-        logger.error(error);
+        if (error instanceof jwt.TokenExpiredError) {
+            logger.error('Token has expired');
+            return { error: 'Token has expired' };
+        } else {
+            logger.error(error);
+            return { error: 'Invalid token' };
+        }
     }
 };
 
