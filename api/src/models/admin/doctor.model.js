@@ -1,8 +1,8 @@
-const db = require('../config/db.config');
-const { createNewDoctor: createNewDoctorQuery, updateDoctor:updateDoctorQuery, getAllDoctor: getAllDoctorQuery, getDoctor: getDoctorQuery, deleteDoctor: deleteDoctorQuery, findUserByEmail: findUserByEmailQuery } = require('../database/queries');
-const { logger } = require('../utils/logger');
+const db = require('../../config/db.config');
+const { createNewDoctor: createNewDoctorQuery, updateDoctor:updateDoctorQuery,countDoctor:countDoctorQuery, getAllDoctor: getAllDoctorQuery, getAllDoctorpaginate: getAllDoctorpaginateQuery, getDoctor: getDoctorQuery, deleteDoctor: deleteDoctorQuery, findUserByEmail: findUserByEmailQuery } = require('../../database/queries');
+const { logger } = require('../../utils/logger');
 
-class Admin {
+class Doctor {
     constructor(full_name, email, password,code,specialist,mobile,location,user_role,created_by) {
         this.full_name      = full_name;
         this.email          = email;
@@ -15,8 +15,8 @@ class Admin {
         this.created_by      = created_by;
     }
     // this fun is for to create doctor 
-    static create(newUser, cb) {
-        db.query(createNewDoctorQuery, 
+    static async create(newUser, cb) {
+        await db.query(createNewDoctorQuery, 
             [
                 newUser.full_name, 
                 newUser.email, 
@@ -41,7 +41,7 @@ class Admin {
         });
     }
     // this fun is for to update doctor
-    static update(id,userRole,updatedFields, callback) {
+    static async update(id,userRole,updatedFields, callback) {
         // Build the SQL query dynamically based on provided fields
         const fields = [];
         const values = [];
@@ -56,7 +56,7 @@ class Admin {
         // console.log('Executing query:', finalQuery);
 
         // this fun is for to update doctor data
-        db.query(sql, [...values, id,userRole], (err, results) => {
+        await db.query(sql, [...values, id,userRole], (err, results) => {
             if (err) {
                 logger.error(err.message);
                 callback(err, null);
@@ -66,16 +66,62 @@ class Admin {
         });
     }
     // this fun is for to update doctor
-    static list(id,callback) {
+    static async list(req,callback) {
+        const page = parseInt(req.query.page, 10) || 0;
+        const limit = parseInt(req.query.limit, 10) || 0;
+        const start_limit = (page - 1) * limit;
         // this fun is for to get all doctor list
-        db.query(getAllDoctorQuery,[2,0], (err, results) => {
-            if (err) {
-                logger.error(err.message);
-                callback(err, null);
-                return;
-            }
-            callback(null, results);
-        });
+        if(page == 0 && limit == 0){
+            await db.query(countDoctorQuery,[2], (countErr, countResult) => {
+                if(countErr){
+                    logger.error(countErr.message);
+                    callback(countErr, null);
+                    return;
+                }
+                const totalCount = countResult[0].count;
+                const totalPages = Math.ceil(totalCount / limit);
+                db.query(getAllDoctorQuery,[2,0], (err, results) => {
+                    if (err) {
+                        logger.error(err.message);
+                        callback(err, null);
+                        return;
+                    }
+                    var result = {
+                        doctors: results,
+                        page: page,
+                        limit: limit,
+                        totalPages: totalPages,
+                        totalCount: totalCount
+                    }
+                    callback(null, result);
+                });
+            });
+        }else{
+            await db.query(countDoctorQuery,[2], (countErr, countResult) => {
+                if(countErr){
+                    logger.error(countErr.message);
+                    callback(countErr, null);
+                    return;
+                }
+                const totalCount = countResult[0].count;
+                const totalPages = Math.ceil(totalCount / limit);
+                db.query(getAllDoctorpaginateQuery,[2,0,limit,start_limit], (err, results) => {
+                    if (err) {
+                        logger.error(err.message);
+                        callback(err, null);
+                        return;
+                    }
+                    var result = {
+                        doctors: results,
+                        page: page,
+                        limit: limit,
+                        totalPages: totalPages,
+                        totalCount: totalCount
+                    }
+                    callback(null, result);
+                });
+            });
+        }
     }
     // this fun is for to update doctor
     static getById(id,callback) {
@@ -88,8 +134,11 @@ class Admin {
                 logger.error(err.message);
                 callback(err, null);
                 return;
+            }else if(results.length > 0 ){
+                callback(null, results[0]);
+            }else{
+                callback(null, null);
             }
-            callback(null, results[0]);
         });
     }
 
@@ -122,4 +171,4 @@ class Admin {
     }
 }
 
-module.exports = Admin;
+module.exports = Doctor;

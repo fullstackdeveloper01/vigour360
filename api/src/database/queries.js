@@ -25,12 +25,21 @@ CREATE TABLE IF NOT EXISTS users (
 const createNewUser = `
 INSERT INTO users VALUES(null, ?, ?, ?, ?, NOW())
 `;
+const findUserByEmail = `
+SELECT * FROM users WHERE email = ?
+`;
 
 const createNewDoctor = `
 INSERT INTO users (full_name, email, password, code, specialist, mobile, location, user_role, created_by) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `;
 const updateDoctor = `
 INSERT INTO users (full_name, email, password, code, specialist, mobile, location, user_role) VALUES( ?, ?, ?, ?, ?, ?, ?, ?)
+`;
+const countDoctor = `
+SELECT COUNT(*) AS count FROM users WHERE user_role = ?
+`;
+const getAllDoctorpaginate = `
+SELECT * FROM users WHERE user_role = ? AND is_deleted = ? LIMIT ? OFFSET ?
 `;
 const getAllDoctor = `
 SELECT * FROM users WHERE user_role = ? AND is_deleted = ?
@@ -41,10 +50,16 @@ SELECT * FROM users WHERE user_id = ?
 const deleteDoctor = `
 UPDATE users SET is_deleted = ? WHERE user_id = ?
 `;
-const findUserByEmail = `
-SELECT * FROM users WHERE email = ?
-`;
 
+const createNewclass = `
+INSERT INTO class (class_name, class_order, created_by) VALUES( ?, ?, ?)
+`;
+const getClasses = `
+SELECT * FROM class WHERE id = ?
+`;
+const deleteClasses =`
+DELETE FROM class WHERE id = ?
+`;
 module.exports = {
     createDB,
     dropDB,
@@ -53,7 +68,12 @@ module.exports = {
     findUserByEmail,
     createNewDoctor,
     updateDoctor,
+    countDoctor,
+    getAllDoctorpaginate,
     getAllDoctor,
     getDoctor,
     deleteDoctor,
+    createNewclass,
+    getClasses,
+    deleteClasses,
 };

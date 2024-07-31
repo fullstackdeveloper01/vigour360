@@ -1,4 +1,4 @@
-const Doctor = require('../../models/admin.model');
+const Doctor = require('../../models/admin/doctor.model');
 const { hash: hashPassword, compare: comparePassword } = require('../../utils/password');
 const { generate: generateToken } = require('../../utils/token');
 
@@ -6,7 +6,6 @@ const { generate: generateToken } = require('../../utils/token');
 exports.create = async (req, res) => {
     const { name,code,email,specialist,phone,location,password } = req.body;
     const created_by = req.userId;
-    console.log('created_by',created_by);
     try {
         // check email Already register
         await Doctor.findByEmail([email.trim()],(err,data)=>{
@@ -86,10 +85,10 @@ exports.update = async (req, res) => {
 }
 // this fun is for to get all doctor list
 exports.getAll = async (req, res) => {
-    const created_by = req.userId;
     try {
         // this fun is for get all doctor list
-        await Doctor.list([created_by],(err,data)=>{
+        await Doctor.list(req,(err,data)=>{
+            // await Doctor.list([created_by],[page,limit],(err,data)=>{
             if (err) {
                 res.status(500).send({
                     'status': "error",
@@ -98,7 +97,7 @@ exports.getAll = async (req, res) => {
             } else {
                 res.status(200).send({
                     'status': "success",
-                    'data': data,
+                    'data': {data},
                 });
             }
         });
@@ -120,7 +119,7 @@ exports.getById = async (req, res) => {
             } else {
                 res.status(200).send({
                     'status': "success",
-                    'data': data,
+                    'data': (data != null) ? data : {},
                 });
             }
         });

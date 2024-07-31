@@ -47,9 +47,50 @@ const validateGetDoctor = [
     }
 ];
 
+// this fun is for to check create doctor request
+const validateClasses = [
+    body('className').notEmpty().withMessage('Class is required'),
+    body('order').notEmpty().withMessage('Order is required'),
+    body('order').isInt().withMessage('Order is Intiger'),
+    // Add more validation rules as needed
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ status: 'error', message: errors.array() });
+        }
+        next();
+    }
+];
+// this fun is for to check updating a doctor request
+const validateUpdateClasses = [
+    body('className').optional().notEmpty().withMessage('Class must not be empty if provided'),
+    body('order').optional().notEmpty().withMessage('Order must not be empty if provided'),
+    body('order').optional().isInt().withMessage('Order must be Intiger if provided'),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ status: 'error', message: errors.array() });
+        }
+        next();
+    }
+];
+// Validation for getting a doctor by ID
+const validateGetClasses = [
+    param('id').isInt().withMessage('Classes ID must be an integer'),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ status: 'error', message: errors.array() });
+        }
+        next();
+    }
+];
 
 module.exports = {
     validateDoctor,
     validateUpdateDoctor,
-    validateGetDoctor
+    validateGetDoctor,
+    validateClasses,
+    validateUpdateClasses,
+    validateGetClasses,
 };
