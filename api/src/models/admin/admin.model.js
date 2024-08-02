@@ -1,8 +1,8 @@
-const db = require('../config/db.config');
-const { createNewUser: createNewUserQuery, findUserByEmail: findUserByEmailQuery } = require('../database/queries');
-const { logger } = require('../utils/logger');
+const db = require('../../config/db.config');
+const { getDoctor: getAdminDataQuery,  findUserByEmail: findUserByEmailQuery, updateUserPassword:updateUserPasswordQuery } = require('../../database/queries');
+const { logger } = require('../../utils/logger');
 
-class User {
+class Admin {
     constructor(firstname, lastname, email, password) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -46,6 +46,58 @@ class User {
             cb({ kind: "not_found" }, null);
         })
     }
+
+    static getUserDetail(id, cb) {
+        db.query(getAdminDataQuery, id, (err, res) => {
+            if (err) {
+                logger.error(err.message);
+                cb(err, null);
+                return;
+            }
+            if (res.length) {
+                cb(null, res[0]);
+                return;
+            }
+            cb({ kind: "not_found" }, null);
+        })
+    }
+    // this fun is for to update password
+    static async updatePassword(id,data, callback) {
+        // this fun is for to update doctor data
+        await db.query(updateUserPasswordQuery, [data, id], (err, results) => {
+            if (err) {
+                logger.error(err.message);
+                callback(err, null);
+                return;
+            }
+            callback(null, results.affectedRows);
+        });
+    }
+    // this fun is for to update doctor
+    static async update(id,updatedFields, callback) {
+        // Build the SQL query dynamically based on provided fields
+        const fields = [];
+        const values = [];
+
+        for (const [key, value] of Object.entries(updatedFields)) {
+            fields.push(`${key} = ?`);
+            values.push(value);
+        }
+        const sql = `UPDATE users SET ${fields.join(', ')} WHERE user_id = ? `;
+        //this fun is for to print query
+        // const finalQuery = db.format(sql, [...values, userRole,id]);
+        // console.log('Executing query:', finalQuery);
+
+        // this fun is for to update doctor data
+        await db.query(sql, [...values, id], (err, results) => {
+            if (err) {
+                logger.error(err.message);
+                callback(err, null);
+                return;
+            }
+            callback(null, results.affectedRows);
+        });
+    }
 }
 
-module.exports = User;
+module.exports = Admin;

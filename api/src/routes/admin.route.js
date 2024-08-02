@@ -5,6 +5,8 @@ const upload = require('../middlewares/upload');
 const doctorsController = require('../controllers/admin/doctors.controller');
 const classController = require('../controllers/admin/class.controller');
 const schoolController = require('../controllers/admin/school.controller');
+const adminController = require('../controllers/admin/admin.controller');
+
 const { catchErrors } = require('../handlers/errorHandlers'); 
 const { 
     validateDoctor,
@@ -16,8 +18,17 @@ const {
     validateSchool,
     validateUpdateSchool,
     validateGetSchool,
+    validAdminLogin,
+    validAdminChangepassword,
 } = require('../validators/doctorValidator');
 const checkToken = require('../middlewares/checkToken');
+//-----------------------------------this api for admin module start--------------------------------------------- 
+// Create a new doctor
+router.route('/login').post(validAdminLogin,  catchErrors(adminController.signin));
+router.route('/changePassword').post(checkToken,validAdminChangepassword,  catchErrors(adminController.changePassword));
+router.route('/user').get(checkToken, catchErrors(adminController.getAdminData));
+router.route('/user/:id').put(checkToken,catchErrors(adminController.update));
+//-----------------------------------this api for admin module end--------------------------------------------- 
 
 //-----------------------------------this api for Doctor Section start--------------------------------------------- 
 // Create a new doctor

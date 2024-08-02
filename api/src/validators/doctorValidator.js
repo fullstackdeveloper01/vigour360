@@ -168,6 +168,31 @@ const validateGetSchool = [
     }
 ];
 
+// this fun is for to check create doctor request
+const validAdminLogin = [
+    body('email').isEmail().withMessage('Email is invalid'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+    // Add more validation rules as needed
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ status: 'error', message: errors.array() });
+        }
+        next();
+    }
+];
+const validAdminChangepassword = [
+    body('old_password').isLength({ min: 6 }).withMessage('Old Password must be at least 6 characters long'),
+    body('new_password').isLength({ min: 6 }).withMessage('New Password must be at least 6 characters long'),
+    // Add more validation rules as needed
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ status: 'error', message: errors.array() });
+        }
+        next();
+    }
+];
 module.exports = {
     validateDoctor,
     validateUpdateDoctor,
@@ -178,4 +203,6 @@ module.exports = {
     validateSchool,
     validateUpdateSchool,
     validateGetSchool,
+    validAdminLogin,
+    validAdminChangepassword,
 };

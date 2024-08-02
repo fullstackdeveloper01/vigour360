@@ -14,7 +14,7 @@ class School {
         // console.log(req.file);
         // return;
         var userCol = '';
-        var userVal = '3,"'+school_name+'","'+email+'","'+hashPassword(password.trim())+'",'+'3340'+',1';
+        var userVal = '3,"'+school_name+'","'+email+'","'+hashPassword(password.trim())+'",'+req.userId+',1';
         if(location !=''){
             userCol += ',location';
             userVal +=',"'+location+'"';
