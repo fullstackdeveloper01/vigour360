@@ -58,7 +58,6 @@ exports.getAll = async (req, res) => {
     try {
         // this fun is for get all Class list
         await Classes.list(req,(err,data)=>{
-            // await Class.list([created_by],[page,limit],(err,data)=>{
             if (err) {
                 res.status(500).send({
                     'status': "error",

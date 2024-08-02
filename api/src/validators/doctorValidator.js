@@ -86,6 +86,88 @@ const validateGetClasses = [
     }
 ];
 
+// this fun is for to check create doctor request
+const validateSchool = [
+    body('type').isInt().withMessage('Type Must be integir'),
+    body('school_name').notEmpty().withMessage('School Name is required'),
+    body('school_prefix').notEmpty().withMessage('School prefix is required'),
+    // body('doctor_id').isArray({ min: 1 }).withMessage('Doctor is required'),
+    // body('doctor_id.*').isInt().withMessage('Doctor is Intiger'),
+    body('email').isEmail().withMessage('Email is invalid'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+    // body('location').notEmpty().withMessage('Location is required'),
+    // body('contact_persons').isArray({ min: 1 }).withMessage('Contact Person is required'),
+    body('contact_persons.*').custom((value) => {
+        if (!Array.isArray(value)) {
+          throw new Error('Each Contact Person must be an array');
+        }
+        value.forEach(item => {
+            if (typeof item.contact_name !== 'string' || typeof item.contact_mobile !== 'number') {
+            throw new Error('Each Contact Person must have a valid name and number');
+            }
+        });
+        return true;
+    }).withMessage('Each Contact Person must be a valid object with name and number'),
+    // Add more validation rules as needed
+    (req, res, next) => {
+        req.body.contact_persons = JSON.parse(req.body.contact_persons)
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ status: 'error', message: errors.array() });
+        }else if(req.body.contact_persons.length == 0){
+            return res.status(400).json({ status: 'error', message: 'Contact Person is required' });
+        }
+        next();
+    }
+];
+
+// this fun is for to check create doctor request
+const validateUpdateSchool = [
+    // body('doctor_id').isArray({ min: 1 }).withMessage('Doctor is required'),
+    // body('doctor_id.*').isInt().withMessage('Doctor is Intiger'),
+    // body('location').notEmpty().withMessage('Location is required'),
+    // body('contact_persons').isArray({ min: 1 }).withMessage('Contact Person is required'),
+    body('user_id').notEmpty().withMessage('User id required'),
+    body('type').isInt().withMessage('Type Must be integir'),
+    body('school_name').notEmpty().withMessage('School Name is required'),
+    body('school_prefix').notEmpty().withMessage('School prefix is required'),
+    body('email').isEmail().withMessage('Email is invalid'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+    body('contact_persons.*').custom((value) => {
+        if (!Array.isArray(value)) {
+          throw new Error('Each Contact Person must be an array');
+        }
+        value.forEach(item => {
+            if (typeof item.contact_name !== 'string' || typeof item.contact_mobile !== 'number') {
+            throw new Error('Each Contact Person must have a valid name and number');
+            }
+        });
+        return true;
+    }).withMessage('Each Contact Person must be a valid object with name and number'),
+    // Add more validation rules as needed
+    (req, res, next) => {
+        req.body.contact_persons = JSON.parse(req.body.contact_persons)
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ status: 'error', message: errors.array() });
+        }else if(req.body.contact_persons.length == 0){
+            return res.status(400).json({ status: 'error', message: 'Contact Person is required' });
+        }
+        next();
+    }
+];
+
+const validateGetSchool = [
+    param('id').isInt().withMessage('Classes ID must be an integer'),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ status: 'error', message: errors.array() });
+        }
+        next();
+    }
+];
+
 module.exports = {
     validateDoctor,
     validateUpdateDoctor,
@@ -93,4 +175,7 @@ module.exports = {
     validateClasses,
     validateUpdateClasses,
     validateGetClasses,
+    validateSchool,
+    validateUpdateSchool,
+    validateGetSchool,
 };
