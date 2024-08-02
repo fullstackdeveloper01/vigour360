@@ -1,8 +1,10 @@
 const router = require('express').Router();
+const upload = require('../middlewares/upload');
 // const { asyncHandler } = require('../middlewares/asyncHandler');
 // const checkEmail = require('../middlewares/checkEmail');
 const doctorsController = require('../controllers/admin/doctors.controller');
 const classController = require('../controllers/admin/class.controller');
+const schoolController = require('../controllers/admin/school.controller');
 const { catchErrors } = require('../handlers/errorHandlers'); 
 const { 
     validateDoctor,
@@ -11,8 +13,12 @@ const {
     validateClasses,
     validateUpdateClasses,
     validateGetClasses,
+    validateSchool,
+    validateUpdateSchool,
+    validateGetSchool,
 } = require('../validators/doctorValidator');
 const checkToken = require('../middlewares/checkToken');
+
 //-----------------------------------this api for Doctor Section start--------------------------------------------- 
 // Create a new doctor
 router.route('/doctors/create').post(checkToken, validateDoctor, catchErrors(doctorsController.create));
@@ -46,5 +52,28 @@ router.route('/classes/:id').get(checkToken, validateGetClasses, catchErrors(cla
 // Delete a classes
 router.route('/classes/:id').delete(checkToken, validateGetClasses, catchErrors(classController.delete));
 //-----------------------------------this api for class Section end--------------------------------------------- 
+
+//-----------------------------------this api for schools Section start--------------------------------------------- 
+// Create a new schools
+router.route('/schools/create').post(checkToken, upload.fields([
+    { name: 'school_logo', maxCount: 1 },
+    { name: 'logo', maxCount: 1 }
+  ]), validateSchool, catchErrors(schoolController.create));
+
+// Update an existing schools
+router.route('/schools/:id').put(checkToken, upload.fields([
+    { name: 'school_logo', maxCount: 1 },
+    { name: 'logo', maxCount: 1 }
+  ]),validateUpdateSchool, catchErrors(schoolController.update));
+
+// Get all schools
+router.route('/schools').get(checkToken, catchErrors(schoolController.getAll));
+
+// Get a specific schools by ID
+router.route('/schools/:id').get(checkToken, validateGetSchool, catchErrors(schoolController.getById));
+
+// Delete a schools
+router.route('/schools/:id').delete(checkToken, validateGetSchool, catchErrors(schoolController.delete));
+//-----------------------------------this api for schools Section end--------------------------------------------- 
 
 module.exports = router;

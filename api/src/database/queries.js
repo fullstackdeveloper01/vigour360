@@ -50,7 +50,6 @@ SELECT * FROM users WHERE user_id = ?
 const deleteDoctor = `
 UPDATE users SET is_deleted = ? WHERE user_id = ?
 `;
-
 const createNewclass = `
 INSERT INTO class (class_name, class_order, created_by) VALUES( ?, ?, ?)
 `;
@@ -59,6 +58,15 @@ SELECT * FROM class WHERE id = ?
 `;
 const deleteClasses =`
 DELETE FROM class WHERE id = ?
+`;
+const schoolContactSql = `INSERT INTO school_contact (contact_name, contact_mobile, school_id) VALUES(?, ?, ?)`;
+
+const deleteSchoolSql =`
+UPDATE school SET is_deleted = ? WHERE school_id = ?
+`;
+
+const deleteSchoolContactSql =`
+UPDATE school_contact SET is_deleted = ? WHERE school_id = ?
 `;
 module.exports = {
     createDB,
@@ -76,4 +84,7 @@ module.exports = {
     createNewclass,
     getClasses,
     deleteClasses,
+    schoolContactSql,
+    deleteSchoolSql,
+    deleteSchoolContactSql,
 };
