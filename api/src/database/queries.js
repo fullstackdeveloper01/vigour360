@@ -68,6 +68,8 @@ UPDATE school SET is_deleted = ? WHERE school_id = ?
 const deleteSchoolContactSql =`
 UPDATE school_contact SET is_deleted = ? WHERE school_id = ?
 `;
+
+const updateUserPassword = `UPDATE users SET password = ? WHERE user_id = ?`;
 module.exports = {
     createDB,
     dropDB,
@@ -87,4 +89,5 @@ module.exports = {
     schoolContactSql,
     deleteSchoolSql,
     deleteSchoolContactSql,
+    updateUserPassword,
 };
