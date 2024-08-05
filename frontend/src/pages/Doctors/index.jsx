@@ -1,5 +1,6 @@
 import CrudModule from '@/modules/CrudModule/CrudModule';
-import DynamicForm from '@/forms/DynamicForm';
+// import DynamicForm from '@/forms/DynamicForm';
+import DoctorForm from '@/forms/DoctorForm';
 import { fields } from './config';
 
 import useLanguage from '@/locale/useLanguage';
@@ -31,8 +32,8 @@ export default function Doctors() {
   };
   return (
     <CrudModule
-      createForm={<DynamicForm fields={fields} />}
-      updateForm={<DynamicForm fields={fields} />}
+      createForm={<DoctorForm fields={fields} />}
+      updateForm={<DoctorForm fields={fields} />}
       config={config}
     />
   );

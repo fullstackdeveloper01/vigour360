@@ -3,6 +3,10 @@ export const fields = {
   //   type: 'number',
   //   required: true,
   // },
+  id: {
+    type: 'id',
+    required: true,
+  },
   doctor_name: {
     type: 'name',
     required: true,
