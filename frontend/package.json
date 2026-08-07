@@ -28,8 +28,8 @@
     "vite": "^5.1.4"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "node api.js && vite",
+    "build": "node api.js && vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "dev:remote": "cross-env VITE_DEV_REMOTE=remote npm run dev"
